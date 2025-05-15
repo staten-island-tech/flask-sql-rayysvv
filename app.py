@@ -31,3 +31,39 @@ with app.app_context():
 @app.route('/')
 def home():
     return render_template('index.html', movies=movies)
+
+@app.route('/book/<int:movie_id>', methods=['GET', 'POST'])
+def book(movie_id):
+    # Find the movie using movie_id
+    movie = next((m for m in movies if m["id"] == movie_id), None)
+
+    if not movie:
+        return "Movie not found", 404
+
+    if request.method == 'POST':
+        name = request.form['name']
+        seats = int(request.form['seats'])
+
+        # 📌 Create a new Booking and save it to the database
+        new_booking = Booking(name=name, movie_title=movie["title"], seats=seats)
+        db.session.add(new_booking)
+        db.session.commit()
+
+        return redirect(url_for('confirmation', name=name, movie_title=movie["title"], seats=seats))
+
+    return render_template('book.html', movie=movie)
+
+@app.route('/confirmation')
+def confirmation():
+    name = request.args.get('name')
+    movie_title = request.args.get('movie_title')
+    seats = request.args.get('seats')
+    return render_template('confirmation.html', name=name, movie_title=movie_title, seats=seats)
+
+@app.route('/admin/bookings')
+def view_bookings():
+    bookings = Booking.query.all()
+    return render_template('bookings.html', bookings=bookings)
+
+if __name__ == '__main__':
+    app.run(debug=True)
