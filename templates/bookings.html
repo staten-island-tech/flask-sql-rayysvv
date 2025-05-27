@@ -3,26 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Bookings</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Admin Panel - Bookings</title>
 </head>
 <body>
-    <h1>📜 All Bookings</h1>
+    <h1>All Bookings</h1>
     <table border="1">
-        <tr>
-            <th>Name</th>
-            <th>Movie</th>
-            <th>Seats</th>
-        </tr>
-        {% for booking in bookings %}
-        <tr>
-            <td>{{ booking.name }}</td>
-            <td>{{ booking.movie_title }}</td>
-            <td>{{ booking.seats }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Movie Title</th>
+                <th>Seats</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.id }}</td>
+                <td>{{ booking.name }}</td>
+                <td>{{ booking.movie_title }}</td>
+                <td>{{ booking.seats }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <br>
-    <a href="{{ url_for('home') }}">⬅️ Back to Movies</a>
+    <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

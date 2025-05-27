@@ -41,10 +41,22 @@ def book(movie_id):
         return "Movie not found", 404
 
     if request.method == 'POST':
-        name = request.form['name']
-        seats = int(request.form['seats'])
+        name = request.form.get('name')
+        seats = request.form.get('seats')
 
-        # 📌 Create a new Booking and save it to the database
+        # Debugging: Print the form data
+        print(f"Name: {name}, Seats: {seats}")
+
+        if not name or not seats:
+            return "Invalid form data", 400
+
+        # Convert seats to integer
+        try:
+            seats = int(seats)
+        except ValueError:
+            return "Seats must be a number", 400
+
+        # Create a new Booking and save it to the database
         new_booking = Booking(name=name, movie_title=movie["title"], seats=seats)
         db.session.add(new_booking)
         db.session.commit()
@@ -58,6 +70,11 @@ def confirmation():
     name = request.args.get('name')
     movie_title = request.args.get('movie_title')
     seats = request.args.get('seats')
+
+    # Validate query parameters
+    if not name or not movie_title or not seats:
+        return "Invalid confirmation data", 400
+
     return render_template('confirmation.html', name=name, movie_title=movie_title, seats=seats)
 
 @app.route('/admin/bookings')

@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Confirmed</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Booking Confirmation</title>
 </head>
 <body>
-    <h1>✅ Booking Confirmed!</h1>
-    <p>Thank you, <strong>{{ name }}</strong>! Your booking for <strong>{{ movie_title }}</strong> ({{ seats }} seat(s)) has been saved.</p>
-    <a href="{{ url_for('home') }}">⬅️ Back to Movies</a>
+    <h1>Booking Confirmation</h1>
+    <p>Thank you, {{ name }}!</p>
+    <p>You have successfully booked {{ seats }} seat(s) for the movie "{{ movie_title }}".</p>
+    <br>
+    <!-- Button to go back to the list of movies -->
+    <a href="{{ url_for('home') }}">
+        <button>Back to Movies</button>
+    </a>
 </body>
 </html>
